@@ -3,11 +3,8 @@
 @section('title') Evasão @endsection
 
 @section('content')
-Seu código
+@include('flash-message')
+
 @endsection
 
-@section('javascripts_bottom')
-@parent
-<script>
-</script>
-@endsection
+

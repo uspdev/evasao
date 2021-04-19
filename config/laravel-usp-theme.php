@@ -38,25 +38,7 @@ $menu = [
     [
         'text' => '<i class="fas fa-home"></i> Item 1',
         'url' => config('app.url') . '/item1',
-    ],
-    [
-        'text' => 'Item 2',
-        'url' => config('app.url') . '/item2',
-        'can' => '',
-    ],
-    [
-        'text' => 'Item 3',
-        'url' => config('app.url') . '/item3',
-        'can' => 'admin',
-    ],
-    [
-        'text' => 'SubMenu1',
-        'submenu' => $submenu1,
-    ],
-    [
-        'text' => 'SubMenu2',
-        'submenu' => $submenu2,
-        'can' => 'admin',
+        'can' => 'hidden',
     ],
 ];
 
@@ -81,5 +63,5 @@ return [
     'logout_url' => config('app.url') . '/logout',
     'login_url' => config('app.url') . '/login',
     'menu' => $menu,
-    'right_menu' => $right_menu,
+   // 'right_menu' => $right_menu,
 ];
