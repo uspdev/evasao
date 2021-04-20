@@ -23,7 +23,7 @@ class evasaoController extends Controller
     {
         $this->authorize('admin');
 
-        $anos = [2015, 2016, 2017, 2018, 2019, 2020];
+        $anos = range(2010, 2020);
 
         $validated = $request->validate([
             'ano' => ['nullable', 'integer', Rule::in($anos)],
@@ -37,12 +37,12 @@ class evasaoController extends Controller
             foreach ($alunos as &$aluno) {
                 $aluno['ano'] = $ano;
                 $aluno['curso'] = $aluno['nomcur'] . '/' . $aluno['nomhab'];
-                $medias = Evasao::obterMediasAlunoGradGeral($aluno['codpes'], false, $aluno['codpgm']);
                 $aluno['status'] = $aluno['data4'] ? 'Encerrado' : 'Ativo';
-                $aluno['totalDiscRepr'] = $medias['totalDiscRepr'];
-                $aluno['totalDiscAprov'] = $medias['totalDiscAprov'];
-                $aluno['mediaPonderadaSuja'] = $medias['mediaPonderadaSuja'];
-                $aluno['mediaPonderadaLimpa'] = $medias['mediaPonderadaLimpa'];
+                $aluno = array_merge($aluno, Evasao::obterMediasAlunoGradGeral($aluno['codpes'], false, $aluno['codpgm']));
+                // $aluno['totalDiscRepr'] = $medias['totalDiscRepr'];
+                // $aluno['totalDiscAprov'] = $medias['totalDiscAprov'];
+                // $aluno['mediaPonderadaSuja'] = $medias['mediaPonderadaSuja'];
+                // $aluno['mediaPonderadaLimpa'] = $medias['mediaPonderadaLimpa'];
                 $aluno['beneficio'] = Evasao::obterBeneficiosFormatado($aluno['codpes'], $ano . '-01-01', $aluno['data4']);
             }
         } else {
