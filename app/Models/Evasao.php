@@ -34,7 +34,7 @@ class Evasao extends Model
         return DB::fetchAll($query);
     }
 
-    public static function obterBeneficiosFormatado($codpes, $dataini, $datafim)
+    public static function obterBeneficiosFormatado($codpes, $dataini, $datafim = null)
     {
         if ($beneficios = Evasao::listarBeneficios($codpes, $dataini, $datafim)) {
             $ret = '';
@@ -48,22 +48,27 @@ class Evasao extends Model
         return $ret;
     }
 
-    public static function listarBeneficios($codpes, $dataini, $datafim)
+    public static function listarBeneficios($codpes, $dataini, $datafim = null)
     {
+        if ($datafim) {
+            $datafim_query = 'AND a.dtafimccdori <= :datafim';
+            $param['datafim'] = $datafim;
+        } else {
+            $datafim_query = '';
+        }
+
         $query = "SELECT b.codbnfalu AS cod, b.tipbnfalu AS tipo, b.nombnfloc AS nome,
                 CONVERT(VARCHAR(10),a.dtainiccd ,103) AS data_inicio,
                 CONVERT(VARCHAR(10), a.dtafimccdori ,103) AS data_fim, a.vlrbnfepfbls AS valor
             FROM BENEFICIOALUCONCEDIDO a
             JOIN BENEFICIOALUNO b ON (a.codbnfalu = b.codbnfalu)
             WHERE a.codpes=:codpes
-                AND a.dtainiccd >= :dataini AND a.dtafimccdori <= :datafim -- periodo do beneficio
+                AND a.dtainiccd >= :dataini -- daita de inicio do benefício
+                $datafim_query -- data fim do beneficio
             ORDER BY a.dtafimccd DESC";
 
-        $param = [
-            'codpes' => $codpes,
-            'dataini' => $dataini,
-            'datafim' => $datafim,
-        ];
+        $param['codpes'] = $codpes;
+        $param['dataini'] = $dataini;
 
         return DB::fetchAll($query, $param);
     }
