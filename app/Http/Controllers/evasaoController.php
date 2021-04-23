@@ -43,14 +43,7 @@ class evasaoController extends Controller
                 // $aluno['totalDiscAprov'] = $medias['totalDiscAprov'];
                 // $aluno['mediaPonderadaSuja'] = $medias['mediaPonderadaSuja'];
                 // $aluno['mediaPonderadaLimpa'] = $medias['mediaPonderadaLimpa'];
-                if ($aluno['status'] == 'Ativo') {
-                    // vamos considerar beneficios que ainda estão vigentes
-                    $aluno['beneficio'] = Evasao::obterBeneficiosFormatado($aluno['codpes'], $ano . '-01-01');
-                } else {
-                    // vamos considerar benefícios até a data de encerramento
-                    $aluno['beneficio'] = Evasao::obterBeneficiosFormatado($aluno['codpes'], $ano . '-01-01', $aluno['data4']);
-
-                }
+                $aluno['beneficio'] = Evasao::obterBeneficiosFormatado($aluno['codpes'], $ano . '-01-01', $aluno['data4']);
             }
         } else {
             $alunos = [];
