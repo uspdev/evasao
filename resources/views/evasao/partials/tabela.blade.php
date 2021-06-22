@@ -6,6 +6,7 @@
             <th>Tipo ingresso</th>
             <th>Identificação</th>
             <th>Estado</th>
+            <th>Data do encerramento</th>
             <th>Tipo encerramento</th>
             <th>Benefício</th>
             <th>Disc. Reprovadas</th>
@@ -22,6 +23,7 @@
     <td>{{ $aluno['tiping'] }}</td>
     <td>{{ $aluno['codpes'] }}</td>
     <td>{{ $aluno['status'] }}</td>
+    <td>{{ $aluno['data4'] }}</td>
     <td>{{ $aluno['tipenchab'] }}</td>
     <td>{{ $aluno['beneficio'] }}</td>
     <td>{{ $aluno['totalDiscRepr'] }}</td>
