@@ -10,7 +10,6 @@ Mostra dados estatísticos a fim de avaliar a evasão de alunos de graduação.
 * faça clone do projeto
 * `php artisan key generate`
 * configure o .env
-* `php artisan migrate`
 * `php artisan serve`
 
 
