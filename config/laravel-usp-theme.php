@@ -36,9 +36,8 @@ $submenu2 = [
 ];
 $menu = [
     [
-        'text' => '<i class="fas fa-home"></i> Item 1',
-        'url' => config('app.url') . '/item1',
-        'can' => 'hidden',
+        'text' => 'Reingresso',
+        'url' => 'reingresso',
     ],
 ];
 

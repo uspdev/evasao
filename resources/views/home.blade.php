@@ -1,7 +1,7 @@
-@extends('master')
+@extends('layouts.app')
 
 @section('content')
-@parent
+{{-- @parent --}}
 <a href="tabelaConsolidada">Tabela Consolidada por ano de ingresso</a>
 
 @endsection
