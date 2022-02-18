@@ -12,9 +12,10 @@ class Evasao extends Model
 
     public static function listarIngressantes(int $ano)
     {
+        $codundclg = getenv('REPLICADO_CODUNDCLG');
         #-- query para gerar a lista de alunos a serem processadas.
         #-- a quantidade retornada será a quantidade de linhas da planilha final
-        $query = "SELECT p.codpes, p.codpgm, p.tiping, p.tipencpgm,
+        $query = "SELECT p.codpes, ps.sexpes, YEAR(ps.dtanas) anonas, p.codpgm, p.tiping, p.tipencpgm,
             CONVERT(VARCHAR(10),p.dtaing ,103) AS data1, p.clsing, p.stapgm,
             CONVERT(VARCHAR(10),p.dtaini ,103) AS data2, p.tipencpgm,
             h.codcur, h.codhab, CONVERT(VARCHAR(10),h.dtaini ,103) AS data3, h.clsdtbalutur,
@@ -24,8 +25,9 @@ class Evasao extends Model
             JOIN HABILPROGGR AS h ON (p.codpes = h.codpes AND p.codpgm = h.codpgm)
             JOIN CURSOGR AS c ON (h.codcur = c.codcur)
             JOIN HABILITACAOGR as a ON (h.codhab = a.codhab AND c.codcur = a.codcur)
+            JOIN PESSOA ps ON (p.codpes = ps.codpes)
             WHERE
-            c.codclg IN (18, 90, 97) AND
+            c.codclg IN ($codundclg) AND
             p.dtaing >= '{$ano}-01-01' AND p.dtaing <= '{$ano}-12-31' -- ingresso no ano
             ORDER BY
             p.codpes, h.codcur, a.codhab;
@@ -74,16 +76,14 @@ class Evasao extends Model
     }
 
     /**
-     * <p>
      * Método que retorna as médias de um aluno específico
-     * Conforme Grad::obterMediasAlunoGrad
-     * </p>
-     *
+     * 
+     * Conforme Graduacao::obterMediasAlunoGrad
      *
      * @param $nusp nusp do aluno validado
      * @param $porSemestre: boolean, agrupar por semestre, default false
      * @param $entrada: referente a matrícula
-     * @return medias
+     * @return Array medias
      */
     public static function obterMediasAlunoGradGeral($codpes, $porSemestre = false, $codpgm = 1)
     {
@@ -104,7 +104,7 @@ class Evasao extends Model
                     --h.*, d.*
                 FROM HISTESCOLARGR h
                 JOIN DISCIPLINAGR d ON (h.verdis = d.verdis AND h.coddis = d.coddis)
-                WHERE h.stamtr='M' --efeticamente matriculado
+                WHERE h.stamtr='M' --efetivamente matriculado
                     AND h.rstfim not in ('D', 'T') AND h.rstfim IS NOT NULL --resultado final: D-equivalencia, T-trancamento
                     AND h.codpgm = :codpgm -- codigo-programa = numero do ingresso
                     AND h.codpes=:codpes";
@@ -114,7 +114,7 @@ class Evasao extends Model
 
         $disciplinas = DB::fetchAll($sql, $param);
 
-        //print_r($disciplinas);exit;
+        // print_r($disciplinas);exit;
         $ret = array();
         $mediaSuja = 0;
         $somaNotaSuja = 0;
