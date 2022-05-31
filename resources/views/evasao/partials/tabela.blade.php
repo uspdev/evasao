@@ -2,7 +2,10 @@
   <thead>
     <tr>
       <th>Ano</th>
-      <th>Curso/habilitação</th>
+      <th>Cod Curso</th>
+      <th>Curso</th>
+      <th>Cod Hab</th>
+      <th>Habilitação</th>
       <th>Tipo ingresso</th>
       <th>Identificação</th>
       <th>Sexo</th>
@@ -24,7 +27,10 @@
     @foreach ($alunos as $aluno)
       <tr>
         <td>{{ $aluno['ano'] }}</td>
-        <td>{{ $aluno['curso'] }}</td>
+        <td>{{ $aluno['codcur'] }}</td>
+        <td>{{ $aluno['nomcur'] }}</td>
+        <td>{{ $aluno['codhab'] }}</td>
+        <td>{{ $aluno['nomhab'] }}</td>
         <td>{{ $aluno['tiping'] }}</td>
         <td>{{ $aluno['codpes'] }}</td>
         <td>{{ $aluno['sexpes'] }}</td>

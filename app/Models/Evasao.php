@@ -5,10 +5,45 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use \Uspdev\Replicado\DB;
+use Uspdev\Replicado\Graduacao;
 
 class Evasao extends Model
 {
     use HasFactory;
+
+    public static function disciplinasDeInteresse() {
+        // para estas disiplinas, serão apresentadas o nro de reprovações do aluno
+        $disciplinasDeInteresse = ['SMA0353', 'SMA0354', 'SMA0355', 'SMA0356', 'SMA0300', 'SMA0304', 'SME0320', '7600005', '7500012'];
+        return $disciplinasDeInteresse;
+    }
+
+    public static function consolidarPorAno($ano)
+    {
+        $alunos = Evasao::listarIngressantes($ano);
+        foreach ($alunos as &$aluno) {
+            $aluno['ano'] = $ano;
+            $aluno['status'] = $aluno['data4'] ? 'Encerrado' : 'Ativo';
+            // medias, disciplinas aprovadas e reprovadas
+            $aluno = array_merge($aluno, Evasao::obterMediasAlunoGradGeral($aluno['codpes'], false, $aluno['codpgm']));
+
+            // disciplinas de interesse
+            foreach (SELF::disciplinasDeInteresse() as $d) {
+                $di["di_$d"] = 0;
+            }
+            $ds = Graduacao::listarDisciplinasAluno($aluno['codpes'], $aluno['codpgm']);
+            foreach ($ds as $d) {
+                if (in_array($d['coddis'], SELF::disciplinasDeInteresse() )) { // se for uma disciplina de interesse
+                    if (in_array($d['rstfim'], ['RN', 'RA', 'RF'])) { // se houver reprovação
+                        $di['di_' . $d['coddis']] = $di['di_' . $d['coddis']] + 1;
+                    }
+                }
+            }
+            $aluno = array_merge($aluno, $di);
+
+            $aluno['beneficio'] = Evasao::obterBeneficiosFormatado($aluno['codpes'], $ano . '-01-01', $aluno['data4']);
+        }
+        return $alunos;
+    }
 
     public static function listarIngressantes(int $ano)
     {
@@ -253,7 +288,6 @@ class Evasao extends Model
 
         //print_r($ret);exit;
         return $ret;
-
     }
 
     // nao vai precisar pois vai usar do datatables
@@ -284,7 +318,6 @@ class Evasao extends Model
                     $row['mediaPonderadaSuja'],
                     $row['mediaPonderadaLimpa'],
                 ]);
-
             }
             fclose($output) or die("Can't close php://output");
         };
