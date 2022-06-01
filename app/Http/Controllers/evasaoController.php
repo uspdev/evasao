@@ -26,17 +26,19 @@ class evasaoController extends Controller
         $anos = array_merge(range(2015, 2022), ['todos']);
 
         $validated = $request->validate([
-            'ano' => ['nullable', 'integer', Rule::in($anos)],
+            'ano' => ['nullable', Rule::in($anos)],
         ]);
 
-        $ano = $validated['ano'] ?? '';
+        $ano = $validated['ano'] ?? null;
         $alunos = [];
 
         if ($ano) {
             if ($ano == 'todos') {
-                foreach ($anos as $ano) {
+                $anosLoop = $anos;
+                array_pop($anosLoop);
+                foreach ($anosLoop as $ano) {
                     $alunosPorAno = Evasao::consolidarPorAno($ano);
-                    $alunos = array_merge($alunos, $alunos);
+                    $alunos = array_merge($alunos, $alunosPorAno);
                 }
             } else {
                 $alunos = Evasao::consolidarPorAno($ano);

@@ -10,6 +10,7 @@
       <th>Identificação</th>
       <th>Sexo</th>
       <th>Nascimento</th>
+      <th>Orígem</th>
       <th>Estado</th>
       <th>Data do encerramento</th>
       <th>Tipo encerramento</th>
@@ -35,6 +36,7 @@
         <td>{{ $aluno['codpes'] }}</td>
         <td>{{ $aluno['sexpes'] }}</td>
         <td>{{ $aluno['anonas'] }}</td>
+        <td>{{ $aluno['tipdocidf'] }}/{{ $aluno['origem'] }}</td>
         <td>{{ $aluno['status'] }}</td>
         <td>{{ $aluno['data4'] }}</td>
         <td>{{ $aluno['tipenchab'] }}</td>
@@ -60,7 +62,7 @@
         "paging": false,
         "responsive": false,
         "order": [
-          [1, "asc"]
+          [0, "asc"]
         ],
         language: {
           url: 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json'

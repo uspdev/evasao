@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use \Uspdev\Replicado\DB;
+use Uspdev\Replicado\Pessoa;
 use Uspdev\Replicado\Graduacao;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Evasao extends Model
 {
     use HasFactory;
 
-    public static function disciplinasDeInteresse() {
+    public static function disciplinasDeInteresse()
+    {
         // para estas disiplinas, serão apresentadas o nro de reprovações do aluno
         $disciplinasDeInteresse = ['SMA0353', 'SMA0354', 'SMA0355', 'SMA0356', 'SMA0300', 'SMA0304', 'SME0320', '7600005', '7500012'];
         return $disciplinasDeInteresse;
@@ -32,7 +34,7 @@ class Evasao extends Model
             }
             $ds = Graduacao::listarDisciplinasAluno($aluno['codpes'], $aluno['codpgm']);
             foreach ($ds as $d) {
-                if (in_array($d['coddis'], SELF::disciplinasDeInteresse() )) { // se for uma disciplina de interesse
+                if (in_array($d['coddis'], SELF::disciplinasDeInteresse())) { // se for uma disciplina de interesse
                     if (in_array($d['rstfim'], ['RN', 'RA', 'RF'])) { // se houver reprovação
                         $di['di_' . $d['coddis']] = $di['di_' . $d['coddis']] + 1;
                     }
@@ -41,6 +43,13 @@ class Evasao extends Model
             $aluno = array_merge($aluno, $di);
 
             $aluno['beneficio'] = Evasao::obterBeneficiosFormatado($aluno['codpes'], $ano . '-01-01', $aluno['data4']);
+
+            // pais de Nascimento
+            if (in_array($aluno['tipdocidf'], ['RNE', 'ProRNE', 'Passap', 'RNM', 'CIEE', 'DIE'])) {
+                $aluno['origem'] = Pessoa::obterComplemento($aluno['codpes'])['nompas'];
+            } else {
+                $aluno['origem'] = $aluno['sglest'];
+            }
         }
         return $alunos;
     }
@@ -50,7 +59,8 @@ class Evasao extends Model
         $codundclg = getenv('REPLICADO_CODUNDCLG');
         #-- query para gerar a lista de alunos a serem processadas.
         #-- a quantidade retornada será a quantidade de linhas da planilha final
-        $query = "SELECT p.codpes, ps.sexpes, YEAR(ps.dtanas) anonas, p.codpgm, p.tiping, p.tipencpgm,
+        $query = "SELECT p.codpes, ps.sexpes, YEAR(ps.dtanas) anonas, ps.tipdocidf, ps.sglest,
+            p.codpgm, p.tiping, p.tipencpgm,
             CONVERT(VARCHAR(10),p.dtaing ,103) AS data1, p.clsing, p.stapgm,
             CONVERT(VARCHAR(10),p.dtaini ,103) AS data2, p.tipencpgm,
             h.codcur, h.codhab, CONVERT(VARCHAR(10),h.dtaini ,103) AS data3, h.clsdtbalutur,
