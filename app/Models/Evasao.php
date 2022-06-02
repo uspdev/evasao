@@ -60,7 +60,7 @@ class Evasao extends Model
         #-- query para gerar a lista de alunos a serem processadas.
         #-- a quantidade retornada será a quantidade de linhas da planilha final
         $query = "SELECT p.codpes, ps.sexpes, YEAR(ps.dtanas) anonas, ps.tipdocidf, ps.sglest,
-            p.codpgm, p.tiping, p.tipencpgm,
+            p.codpgm, p.tiping, p.tipencpgm, p.sglacaafm,
             CONVERT(VARCHAR(10),p.dtaing ,103) AS data1, p.clsing, p.stapgm,
             CONVERT(VARCHAR(10),p.dtaini ,103) AS data2, p.tipencpgm,
             h.codcur, h.codhab, CONVERT(VARCHAR(10),h.dtaini ,103) AS data3, h.clsdtbalutur,
