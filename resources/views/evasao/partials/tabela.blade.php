@@ -7,6 +7,7 @@
       <th>Cod Hab</th>
       <th>Habilitação</th>
       <th>Tipo ingresso</th>
+      <th>Tot. pontos</th>
       <th>Acao afirmativa</th>
       <th>Identificação</th>
       <th>Sexo</th>
@@ -34,6 +35,7 @@
         <td>{{ $aluno['codhab'] }}</td>
         <td>{{ $aluno['nomhab'] }}</td>
         <td>{{ $aluno['tiping'] }}</td>
+        <td>{{ $aluno['ptoing'] }}</td>
         <td>{{ $aluno['sglacaafm'] }}</td>
         <td>{{ $aluno['codpes'] }}</td>
         <td>{{ $aluno['sexpes'] }}</td>

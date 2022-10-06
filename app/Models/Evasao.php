@@ -4,7 +4,7 @@ namespace App\Models;
 
 use \Uspdev\Replicado\DB;
 use Uspdev\Replicado\Pessoa;
-use Uspdev\Replicado\Graduacao;
+use App\Replicado\Graduacao;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -50,6 +50,9 @@ class Evasao extends Model
             } else {
                 $aluno['origem'] = $aluno['sglest'];
             }
+
+            // Total de pontos para ingressante fuvest
+            $aluno['ptoing'] = Graduacao::obterTotalPontosFuvest($aluno['codpes'], $aluno['codpgm']);
         }
         return $alunos;
     }
