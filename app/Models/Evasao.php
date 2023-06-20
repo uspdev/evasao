@@ -57,9 +57,12 @@ class Evasao extends Model
         return $alunos;
     }
 
+    /**
+     * Lista os ingressantes nos cursos da unidade por ano de ingresso
+     */
     public static function listarIngressantes(int $ano)
     {
-        $codundclg = getenv('REPLICADO_CODUNDCLG');
+        $codundclgs = getenv('REPLICADO_CODUNDCLGS');
         #-- query para gerar a lista de alunos a serem processadas.
         #-- a quantidade retornada será a quantidade de linhas da planilha final
         $query = "SELECT p.codpes, ps.sexpes, YEAR(ps.dtanas) anonas, ps.tipdocidf, ps.sglest,
@@ -75,7 +78,7 @@ class Evasao extends Model
             JOIN HABILITACAOGR as a ON (h.codhab = a.codhab AND c.codcur = a.codcur)
             JOIN PESSOA ps ON (p.codpes = ps.codpes)
             WHERE
-            c.codclg IN ($codundclg) AND
+            c.codclg IN ($codundclgs) AND
             p.dtaing >= '{$ano}-01-01' AND p.dtaing <= '{$ano}-12-31' -- ingresso no ano
             ORDER BY
             p.codpes, h.codcur, a.codhab;
@@ -125,7 +128,7 @@ class Evasao extends Model
 
     /**
      * Método que retorna as médias de um aluno específico
-     * 
+     *
      * Conforme Graduacao::obterMediasAlunoGrad
      *
      * @param $nusp nusp do aluno validado

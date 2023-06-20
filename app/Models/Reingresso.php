@@ -21,7 +21,7 @@ class Reingresso
         JOIN HABILITACAOGR as a ON (h.codhab = a.codhab AND c.codcur = a.codcur)
         WHERE
             -- (p.tipencpgm = 'Encerramento novo ingresso' or p.tipencpgm is NULL) AND -- verifica se ha encerramento por novo ingresso ou está ativo ainda
-            c.codclg IN (" . getenv('REPLICADO_CODUNDCLG') . ") AND -- nos cursos da Unidade
+            c.codclg IN (" . getenv('REPLICADO_CODUNDCLGS') . ") AND -- nos cursos da Unidade
             p.dtaing > convert(datetime,'2010-01-01') -- a partir de 2010s
         ORDER BY p.codpes
         ";
