@@ -5,15 +5,15 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.3||^8.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
-        "uspdev/cache": "^0.7.3",
+        "uspdev/cache": "^1",
         "uspdev/laravel-usp-theme": "^2.0",
-        "uspdev/replicado": "^1.7",
+        "uspdev/laravel-replicado": "^1.0",
         "uspdev/senhaunica-socialite": "^2.0"
     },
     "require-dev": {
