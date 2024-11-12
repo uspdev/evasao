@@ -43,6 +43,13 @@ $menu = [
 
 $right_menu = [
     [
+        // menu utilizado para views da biblioteca senhaunica-socialite.
+        'key' => 'senhaunica-socialite',
+    ],
+    [
+        'key' => 'laravel-tools',
+    ],
+    [
         'text' => '<i class="fas fa-cog"></i>',
         'title' => 'Configurações',
         'target' => '_blank',
@@ -62,5 +69,5 @@ return [
     'logout_url' => config('app.url') . '/logout',
     'login_url' => config('app.url') . '/login',
     'menu' => $menu,
-   // 'right_menu' => $right_menu,
+   'right_menu' => $right_menu,
 ];
