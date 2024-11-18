@@ -18,13 +18,5 @@ use App\Http\Controllers\evasaoController;
 Route::match(['get', 'post'], 'tabelaConsolidada', [evasaoController::class, 'tabelaConsolidada']);
 Route::get('/', [evasaoController::class, 'index']);
 
-//redireciona para o login, caso a pessoa tente acessar o reingresso
-Route::middleware(['auth'])->get('/reingresso', function() {
-    if (auth()->user()->level !== 'admin') {
-        abort(403, 'Acesso negado');
-    }
-    
-    $reingresso = Reingresso::listarReingresso();
+Route::middleware(['auth'])->get('/reingresso', [evasaoController::class, 'reingresso'])->name('reingresso');
 
-    return view('reingresso', compact('reingresso'));
-});
