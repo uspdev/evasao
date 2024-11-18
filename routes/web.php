@@ -17,6 +17,8 @@ use App\Http\Controllers\evasaoController;
 
 Route::match(['get', 'post'], 'tabelaConsolidada', [evasaoController::class, 'tabelaConsolidada']);
 Route::get('/', [evasaoController::class, 'index']);
-
-Route::middleware(['auth'])->get('/reingresso', [evasaoController::class, 'reingresso'])->name('reingresso');
+Route::get('/reingresso', function() {
+    $reingresso = Reingresso::listarReingresso();
+    return view('reingresso', compact('reingresso'));
+});
 
