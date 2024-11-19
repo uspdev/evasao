@@ -17,7 +17,4 @@ use App\Http\Controllers\evasaoController;
 
 Route::match(['get', 'post'], 'tabelaConsolidada', [evasaoController::class, 'tabelaConsolidada']);
 Route::get('/', [evasaoController::class, 'index']);
-Route::get('/reingresso', function() {
-    $reingresso = Reingresso::listarReingresso();
-    return view('reingresso', compact('reingresso'));
-});
+Route::match(['get', 'post'], 'reingresso', [evasaoController::class, 'reingresso']);
