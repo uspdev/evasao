@@ -38,6 +38,7 @@ $menu = [
     [
         'text' => 'Reingresso',
         'url' => 'reingresso',
+        'can' => 'admin',
     ],
 ];
 
