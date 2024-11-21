@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Evasao;
+use App\Models\Reingresso;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
@@ -48,5 +49,12 @@ class evasaoController extends Controller
         $disciplinasDeInteresse = Evasao::disciplinasDeInteresse();
 
         return view('evasao.tabela-consolidada', compact('alunos', 'anos', 'ano', 'disciplinasDeInteresse'));
+    }
+
+    public function reingresso()
+    {
+        $this->authorize('admin');
+        $reingresso = Reingresso::listarReingresso();
+        return view('reingresso', compact('reingresso'));
     }
 }
