@@ -24,7 +24,9 @@ class evasaoController extends Controller
     {
         $this->authorize('admin');
 
-        $anos = array_merge(range(2015, 2022), ['todos']);
+        $anoInicio = 2010;
+        $anoFim = date('Y');
+        $anos = array_merge(range($anoInicio, $anoFim), ['todos']);
 
         $validated = $request->validate([
             'ano' => ['nullable', Rule::in($anos)],
