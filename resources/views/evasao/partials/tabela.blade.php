@@ -1,4 +1,4 @@
-<table class="table table-bordered table-hover table-sm alunos">
+<table class="table table-bordered table-hover table-sm alunos datatable-simples dt-buttons">
   <thead>
     <tr>
       <th>Ano</th>
@@ -57,25 +57,5 @@
   </tbody>
 </table>
 
-@section('javascripts_bottom')
-  @parent
-  <script>
-    $(function() {
-      oTable = $('.alunos').DataTable({
-        dom: 'fBi',
-        "paging": false,
-        "responsive": false,
-        "order": [
-          [0, "asc"]
-        ],
-        language: {
-          url: 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Portuguese-Brasil.json'
-        },
-        "buttons": [
-          'excelHtml5', 'csvHtml5'
-        ]
-      });
 
-    });
-  </script>
-@endsection
+
