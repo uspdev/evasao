@@ -24,33 +24,35 @@ class evasaoController extends Controller
     {
         $this->authorize('admin');
 
-        $anoInicio = 2010;
-        $anoFim = date('Y');
-        $anos = array_merge(range($anoInicio, $anoFim), ['todos']);
+        $anos = range(2010, date('Y'));
+
+        if ($request->isMethod('get')) {
+
+            $anoInicio = 2010;
+            $anoFim = date('Y');  // Ano final padrão (ano atual)
+            return view('evasao.tabela-consolidada', compact('anos', 'anoInicio', 'anoFim'));
+        }
 
         $validated = $request->validate([
-            'ano' => ['nullable', Rule::in($anos)],
+            'ano_inicio' => ['nullable', 'numeric', 'integer', Rule::in($anos)],
+            'ano_fim' => ['nullable', 'numeric', 'integer', Rule::in($anos)],
         ]);
 
-        $ano = $validated['ano'] ?? null;
-        $alunos = [];
+        $anoInicio = intval($validated['ano_inicio'] ?? 2010);
+        $anoFim = intval($validated['ano_fim'] ?? date('Y'));
 
-        if ($ano) {
-            if ($ano == 'todos') {
-                $anosLoop = $anos;
-                array_pop($anosLoop);
-                foreach ($anosLoop as $ano) {
-                    $alunosPorAno = Evasao::consolidarPorAno($ano);
-                    $alunos = array_merge($alunos, $alunosPorAno);
-                }
-            } else {
-                $alunos = Evasao::consolidarPorAno($ano);
-            }
+        if ($anoInicio > $anoFim) {
+            return back()->withErrors(['intervalo' => 'O ano inicial deve ser menor ou igual ao ano final.']);
+        }
+
+        $alunos = [];
+        foreach (range($anoInicio, $anoFim) as $ano) {
+            $alunos = array_merge($alunos, Evasao::consolidarPorAno($ano));
         }
 
         $disciplinasDeInteresse = Evasao::disciplinasDeInteresse();
 
-        return view('evasao.tabela-consolidada', compact('alunos', 'anos', 'ano', 'disciplinasDeInteresse'));
+        return view('evasao.tabela-consolidada', compact('alunos', 'anos', 'anoInicio', 'anoFim', 'disciplinasDeInteresse'));
     }
 
     public function reingresso()
